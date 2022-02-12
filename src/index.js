@@ -42,6 +42,41 @@ class Provider extends React.Component{
   }
 }
 
+export function connect(callback){
+  return function (Component){
+    class ConnectedComponent extends React.Component{
+      constructor(props){
+        super(props);
+        this.unSubscribe = this.props.store.subscribe(()=>this.forceUpdate());
+      }
+
+      componentWillUnmount(){
+        this.unSubscribe();
+      }
+      render(){
+              const {store} = this.props;
+              const state = store.getState();
+              const dataTobePassedAsProps = callback(state);
+              return( 
+                  <Component 
+                    {...dataTobePassedAsProps} 
+                    dispatch = {store.dispatch}
+                  />);
+        
+      }
+    }
+    class ConnectedComponentWrapper extends  React.Component{
+      render(){
+        return (<StoreContext.Consumer>
+          {(store) => <ConnectedComponent store ={store}/>}
+        </StoreContext.Consumer>
+        );
+      }
+    }
+    return ConnectedComponentWrapper;
+  }
+}
+
 // store.dispatch({
 //   type: "ADD_MOVIES",
 //   movies : [{name :"Superman"}]
