@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 import MovieCard from './MovieCard';
 import {addMovies} from '../actions';
 import {showFavourite} from '../actions';
-import {connect, StoreContext} from '../index';
+import {connect} from 'react-redux';
 
 class App extends React.Component {
 
@@ -36,7 +36,7 @@ class App extends React.Component {
 
       return (
         <div className="App">
-          <Navbar search={search}/>
+          <Navbar/>
           <div className = "main">
             <div className= "tabs">
                 <div className={`tab ${showFavourites ? '':'active-tabs'}`} onClick={()=>this.onTabChange(false)}>Movies</div>
